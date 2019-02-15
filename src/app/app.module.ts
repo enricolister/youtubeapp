@@ -11,11 +11,15 @@ import { HttpClientModule } from '@angular/common/http';
 // services
 import { YoutubeService } from './services/youtube.service';
 
+// pipes
+import { DomseguroPipe } from './pipes/domseguro.pipe';
+
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    NavbarComponent
+    NavbarComponent,
+    DomseguroPipe
   ],
   imports: [
     BrowserModule,

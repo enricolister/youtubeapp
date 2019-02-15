@@ -16,17 +16,22 @@ export class YoutubeService {
   constructor(public http: HttpClient) { }
 
   getVideos() {
-    let url = `${this.youtubeUrl}/playlistItems?part=snippet&maxResults=10&key=${this.apiKey}&playlistId=${this.playList}`;
+    let url = `${this.youtubeUrl}/playlistItems`;
 
-    /* let params = new HttpParams();
-    params.set('part', 'snippet');
-    params.set('maxResults', '10');
-    params.set('playlistId', this.playList);
-    params.set('key', this.apiKey); */
+    let params = new HttpParams().set('part', 'snippet').set('maxResults', '10').set('playlistId', this.playList).set('key', this.apiKey);
 
-    return this.http.get(url)
+    if (this.nextPageToken) {
+      console.log('there is a next page token');
+      params = params.append('pageToken', this.nextPageToken);
+    }
+
+    if (params.has('pageToken')) {
+      console.log('has nextpage');
+    } else {
+      console.log('non has next page');
+    }
+    return this.http.get(url, { params })
       .pipe( map ( (data: any) => {
-        console.log(data);
         this.nextPageToken = data.nextPageToken;
         let videos: any[] = [];
         for (let video of data.items) {
